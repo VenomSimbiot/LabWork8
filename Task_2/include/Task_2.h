@@ -52,11 +52,11 @@ public:
                 sortByTime(arr);
                 allArrToFile(arr);
                 std::cout << "Что вы хотите сделать?\n";
-                std::cout << "1 - Вывести все расписание полетов\n2 - Добавить новый элемент\n3 - Редактировать элементы с значением одной из колонок\n4 - Удалить элементы с значением одной из колонок\n5 - Найти элементы с значением одной из колонок\n6 - выход\n";
+                std::cout << "1 - Вывести все расписание полетов\n2 - Добавить новый элемент\n3 - Редактировать элементы с значением одной из колонок\n4 - Удалить элементы с значением одной из колонок\n5 - Найти элементы с значением одной из колонок\n6 - Вывести по полю юнион\n7 - выход\n";
                 k = -1;
-                while (k < 1 or k > 6)
+                while (k < 1 or k > 7)
                 {
-                    k = vvod("Введите число от 1 до 6: ");
+                    k = vvod("Введите число от 1 до 7: ");
                 }
                 switch (k){
                 case 1:
@@ -75,6 +75,9 @@ public:
                     arr = findel(arr, count, 5);
                     break;
                 case 6:
+                    VivodUnion(arr);
+                    break;
+                case 7:
                     n = -1;
                     file.close();
                     break;
@@ -85,7 +88,18 @@ public:
         
     }
 
-    
+    void VivodUnion(airport* arr){
+        std::cout << "Во сколько в какой город летят: \n";
+        std::cout << "Время -> рейс | город\n";
+        for (int i = 0; i < count; i++)
+        {
+            std::cout << arr[i].Time.hour << ":" ;
+            if(arr[i].Time.minute < 10){
+                std::cout << "0";
+            }
+            std::cout << arr[i].Time.minute << " -> " << arr[i].raceNum << " | " << arr[i].Place << std::endl;
+        }
+    }
 
     airport* findel(airport* arr, int N, int task){
         std::cout << "Введите поиск по какой переменной будет производиться: 1 - номер рейса, 2 - тип самолета, 3 - название города, 4 - час вылета, 5 - минута вылета: \n";
@@ -128,13 +142,13 @@ public:
                 }
                 break;
             case 4:
-                if (arr[i].hour == b)
+                if (arr[i].Time.hour == b)
                 {
                     t++;
                 }
                 break;
             case 5:
-                if (arr[i].minute == b)
+                if (arr[i].Time.minute == b)
                 {
                    t++;
                 }
@@ -159,12 +173,12 @@ public:
                 {
                     std::cout << i + 1 << " | ";
                     std::cout << arr[i].raceNum << " | " << arr[i].PlaneType << " | ";
-                    std::cout << arr[i].Place << " | " << arr[i].hour << ":";
-                    if (arr[i].minute < 10)
+                    std::cout << arr[i].Place << " | " << arr[i].Time.hour << ":";
+                    if (arr[i].Time.minute < 10)
                     {
                         std::cout << "0";
                     }
-                    std::cout <<arr[i].minute;
+                    std::cout <<arr[i].Time.minute;
                     std::cout << std::endl;
                 }
             }
@@ -194,7 +208,7 @@ public:
     
     std::string airportToString(airport a){
         std::string b = "";
-        b += std::to_string(a.raceNum) + " " + a.PlaneType + " " + a.Place + " " + std::to_string(a.hour) + " " + std::to_string(a.minute) + "\n";
+        b += std::to_string(a.raceNum) + " " + a.PlaneType + " " + a.Place + " " + std::to_string(a.Time.hour) + " " + std::to_string(a.Time.minute) + "\n";
         return b;        
     }
 
@@ -248,12 +262,11 @@ public:
                 }
                 else if (k == 3)
                 {
-                    b.hour = std::stoi(c);
+                    b.Time.hour = std::stoi(c);
                 }
                 else{
-                    b.minute = std::stoi(c);
+                    b.Time.minute = std::stoi(c);
                 }
-
                 c = "";
                 q = 0;
                 k++;
@@ -268,14 +281,14 @@ public:
         {
             for (int i = 0; i < count - 1; i++)
             {
-                if (arr[i].hour > arr[i + 1].hour)
+                if (arr[i].Time.hour > arr[i + 1].Time.hour)
                 {
                     airport nice = arr[i];
                     arr[i] = arr[i + 1];
                     arr[i + 1] = nice;
                 }
-                else if(arr[i].hour == arr[i+1].hour){
-                    if (arr[i].minute > arr[i + 1].minute)
+                else if(arr[i].Time.hour == arr[i+1].Time.hour){
+                    if (arr[i].Time.minute > arr[i + 1].Time.minute)
                     {
                         airport nice = arr[i];
                         arr[i] = arr[i + 1];
@@ -333,13 +346,13 @@ public:
                 }
                 break;
             case 4:
-                if (arr[N].hour == b)
+                if (arr[N].Time.hour == b)
                 {
                     fi = 0;
                 }
                 break;
             case 5:
-                if (arr[N].minute == b)
+                if (arr[N].Time.minute == b)
                 {
                    fi = 0;
                 }
@@ -424,7 +437,7 @@ public:
                 std::cout << "Максимальный час - 23\n";
             }
         }
-        airport1.hour = hour;
+        airport1.Time.hour = hour;
         int minute = -1;
         while (minute < 0 or minute > 59)
         {
@@ -438,7 +451,7 @@ public:
                 std::cout << "Максимальная минута - 59\n";
             }
         }
-        airport1.minute = minute;
+        airport1.Time.minute = minute;
         return airport1;
     }
 
@@ -504,12 +517,12 @@ public:
         {
             std::cout << i + 1 << " | ";
             std::cout << arr[i].raceNum << " | " << arr[i].PlaneType << " | ";
-            std::cout << arr[i].Place << " | " << arr[i].hour << ":";
-            if (arr[i].minute < 10) 
+            std::cout << arr[i].Place << " | " << arr[i].Time.hour << ":";
+            if (arr[i].Time.minute < 10) 
             {
                 std::cout << "0";
             }
-            std::cout <<arr[i].minute;
+            std::cout <<arr[i].Time.minute;
             std::cout << std::endl;
         }
     }

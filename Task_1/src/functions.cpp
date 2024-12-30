@@ -177,31 +177,30 @@ dialog* arrayWhile(){
 }
 
 dialog* newarr(dialog* arr, int N, bool create, int del){
-    /* dialog *arr21; */
+    dialog* newarray = new dialog[1];
     if (create)
     {
-        dialog* arr21 = new dialog[2];
-        std::cout << N << std::endl;
+        newarray = new dialog[N + 1];
         for (int i = 0; i < N; i++)
         {
-            arr21[i] = arr[i];
+            newarray[i] = arr[i];
         }
         count++;
-        return arr21;
+        return newarray;
     }
     else{
-        dialog* arr21 = new dialog[N - 1];
+        newarray = new dialog[N - 1];
         int k = 0;
         for (int i = 0; i < N; i++)
         {
             if (i != del)
             {
-                arr21[k] = arr[i];
+                newarray[k] = arr[i];
                 k++;
             }
         }
         count--;
-        return arr21;
+        return newarray;
     }
 }
 

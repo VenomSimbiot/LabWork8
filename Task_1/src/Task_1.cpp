@@ -79,5 +79,5 @@ void task_1(){
             break;
         }
     }
-    
+    delete[] arr;
 }
